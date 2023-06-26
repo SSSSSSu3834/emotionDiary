@@ -1,3 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Diphylleia&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Diphylleia&family=Noto+Serif+KR:wght@200&display=swap");
+
+body {
+  background-color: #f6f6f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Diphylleia", serif;
+  min-height: 100vh;
+  margin: 0;
+  /* body에는 기본적으로 margin 값이 있어서 0으로 만들어준다 */
+}
+/* font-family: 'Bagel Fat One', cursive;
+font-family: 'Diphylleia', serif;
+font-family: 'Noto Serif KR', serif; */
+
+/* 미디어 쿼리 사용 */
+/* 반응형 브라우저 만들때 유용
+여기서 min-width는 최소한으로 지켜야하는 규격을 정해준것
+그러니까 min-width로 정해놓은 범위를 넘어가면 괄호안의 규칙이 적용됨 */
+
+@media (min-width: 650px) {
+  .App {
+    width: 640px;
+  }
+}
+
+@media (max-width: 650px) {
+  .App {
+    width: 90vw;
+    /* 현재 화면에서 90%를 차지하게 하겠다. */
+  }
+}
+
+#root {
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
 .App {
-  padding: 20px;
+  min-height: 100vh;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* 버튼 스타일링 */
+.MyButton {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px 10px 20px;
+  font-size: 18px;
+  white-space: nowrap;
+  font-family: "Bagel Fat One", cursive;
+  /* 버튼 안의 글자가 잘려서 밑으로 내려가지 않도록 하는 속성 */
+}
+
+.MyButton_default {
+  background-color: #ececec;
+  color: black;
+}
+
+.MyButton_positive {
+  background-color: #64c964;
+  color: white;
+}
+
+.MyButton_negative {
+  background-color: #fd565f;
+  color: white;
+}
+
+header {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  /* <div>로 묶인 헤더요소를 가로로 배치함*/
+  align-items: center;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+header > div {
+  display: flex;
+  /* 모든 div에 전체적으로 디스플레이 속성 적용 */
+}
+
+header .head_text {
+  width: 50%;
+  font-size: 25px;
+  justify-content: center;
+}
+
+header .head_btn_left {
+  width: 25%;
+  justify-content: start;
+  /* 버튼이 왼쪽 끝에 오도록 */
+}
+
+header .head_btn_left {
+  width: 25%;
+  justify-content: end;
+  /* 버튼이 오른쪽 끝에 오도록 */
+}
+
+header button {
+  font-family: "Nanum Pen Script";
 }
