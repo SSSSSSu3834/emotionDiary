@@ -1,6 +1,6 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import React, { useReducer, useState, useRef, dispatch } from "react";
+import React, { useReducer, useRef } from "react";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Edit from "./pages/Edit";
@@ -25,6 +25,7 @@ const reducer = (state, action) => {
       newState = state.map((it) =>
         it.id === action.data.id ? { ...action.data } : it
       );
+      break;
     }
     default:
       return state;
@@ -37,8 +38,41 @@ export const DiaryStateContext = React.createContext();
 //on어쩌구 함수를 공급할 context
 export const DiaryDispatchContext = React.createContext();
 
+const dummyData = [
+  {
+    id: 1,
+    emotion: 1,
+    content: "오늘의 일기 1번",
+    date: 1687785938005,
+  },
+  {
+    id: 2,
+    emotion: 2,
+    content: "오늘의 일기 2번",
+    date: 1687785938006,
+  },
+  {
+    id: 3,
+    emotion: 3,
+    content: "오늘의 일기 3번",
+    date: 1687785938007,
+  },
+  {
+    id: 4,
+    emotion: 4,
+    content: "오늘의 일기 4번",
+    date: 1687785938008,
+  },
+  {
+    id: 5,
+    emotion: 5,
+    content: "오늘의 일기 5번",
+    date: 1687785938009,
+  },
+];
+
 function App() {
-  const [data, dispatch] = useReducer(reducer, []);
+  const [data, dispatch] = useReducer(reducer, dummyData);
 
   const dataID = useRef(0);
   //CREATE
@@ -78,12 +112,10 @@ function App() {
     <DiaryStateContext.Provider value={data}>
       <DiaryDispatchContext.Provider value={{ onCreate, onEdit, onRemove }}>
         <div className="App">
-          <h2>App.js</h2>
-
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/new" element={<New />} />
-            <Route path="/edit" element={<Edit />} />
+            <Route path="/edit/:id" element={<Edit />} />
             <Route path="/diary/:id" element={<Diary />} />
           </Routes>
         </div>
