@@ -1,10 +1,11 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import EmotionItem from "./EmotionItem";
 import MyButton from "./MyButton";
 import MyHeader from "./MyHeader";
 import { DiaryDispatchContext } from "../App";
+import { getStringDate } from "../util/date";
 
 const emotionList = [
   {
@@ -34,11 +35,7 @@ const emotionList = [
   },
 ];
 
-const getStringDate = (date) => {
-  return date.toISOString().slice(0, 10);
-};
-
-const DiaryEditor = () => {
+const DiaryEditor = ({ isEdit, originData }) => {
   const [date, setDate] = useState(getStringDate(new Date()));
   const navigation = useNavigate();
 
@@ -58,7 +55,7 @@ const DiaryEditor = () => {
   const navigate = useNavigate();
 
   //App에서 만들어준 컨텍스트를 가져와서 onCreate함수를 불러준다.
-  const { onCreate } = useContext(DiaryDispatchContext);
+  const { onCreate, onEdit } = useContext(DiaryDispatchContext);
 
   //작성 완료 눌렀을 때 핸들러
   const handleSubmit = () => {
@@ -66,16 +63,39 @@ const DiaryEditor = () => {
       contentRef.current.focus();
       return;
     }
-    onCreate(date, content, emotion);
+
+    if (
+      window.confirm(
+        isEdit ? "일기를 수정하시겠습니까?" : "새로운 일기를 작성하시겠습니까?"
+      )
+    )
+      if (!isEdit) {
+        //수정하는 페이지가 아니면 oncreate에 데이터르 넣어주고
+        onCreate(date, content, emotion);
+      } else {
+        // 수정하는 페이지면 onEdit에 데이터를 넣어줌
+        // 그럼 app.js에 있는 context로 들어가서 새로운 배열 만들어줌
+        onEdit(originData.id, date, content, emotion);
+      }
 
     // 저장했으면 홈으로 돌아가기(뒤로가기로 다시 돌아오지 못하게 만들것임)
     navigate("/", { replace: true });
   };
 
+  useEffect(() => {
+    if (isEdit) {
+      //Edit 페이지에서만 이 로직이 로딩 되도록 만들어줌
+      // 예전에 입력했던 데이터가 그대로 들어오게 됨.
+      setDate(getStringDate(new Date(parseInt(originData.date))));
+      setEmotion(originData.emotion);
+      setContent(originData.content);
+    }
+  }, [isEdit, originData]);
+
   return (
     <div className="DiaryEditor">
       <MyHeader
-        headText={"새 일기쓰기"}
+        headText={isEdit ? "일기 수정하기" : "새 일기쓰기"}
         leftChild={
           <MyButton text={"< 뒤로가기"} onClick={() => navigation(-1)} />
         }
